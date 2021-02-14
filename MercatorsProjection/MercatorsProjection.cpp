@@ -1,7 +1,6 @@
 #include "MercatorsProjection.h"
 #define _USE_MATH_DEFINES
 #include <utility>
-//#include <cmath>
 #include <math.h>
 
 MercatorsProjection::MercatorsProjection(unsigned rf, unsigned tiles)
@@ -82,36 +81,63 @@ double MercatorsProjection::degreesToRadian(const float& degrees)
 	return (degrees * M_PI) / 180.0f;
 }
 
-float MercatorsProjection::getParallelHeightInCMS(const float& parralel_pos)
+float MercatorsProjection::getParallelHeightInCms(const float& parralel_pos)
 {
-	return this->ln10 * this->r * log10(tan((degreesToRadian(90) + degreesToRadian(20)) / 2));
+	return this->ln10 * this->r * log10( tan(degreesToRadian( (90 + parralel_pos) * 0.5f )) );
 }
 
 vector<vector<Point>> MercatorsProjection::createMap()
 {
 	if (valid == false)
 	{
+		vector<vector<Point>> points;
+
 		int count{	0 },
 			size{	static_cast<int>( this->sqrtTiles * 0.5f ) 	},
 			actuallyMeridianPos{ INTERVAL_MERIDIAN_MAX	* (-1)	},
-			actuallyParallelPos{ INTERVAL_PARALLEL_MAX	* (-1)	};
+			actuallyParallelPos{ INTERVAL_PARALLEL_MAX/** (-1)*/};
+
+		float xPos{0.f};
+		float yPos{ getParallelHeightInCms(actuallyParallelPos) };
 
 		if (!this->throuhZero) { size += 1; }
 
-		float* parallelsHeightsInCMS{ new float[size] };
-
-		Point p;
-		p.meridian_pos = actuallyMeridianPos;
-		p.parallel_pos = actuallyParallelPos;
-		p.x = 0;
-		p.y = 0;
-
-
-
 		for (unsigned i{}; i < size; i++)
 		{
+			vector<Point> parallels;
+			yPos = getParallelHeightInCms(actuallyParallelPos);
 
+			for (unsigned j{}; j < (this->sqrtTiles + 1); j++)
+			{
+				Point point;
+				point.meridian_pos = actuallyMeridianPos;
+				point.parallel_pos = actuallyParallelPos;
+				point.x = xPos;
+				point.y = yPos;
+				parallels.push_back(point);
+				actuallyMeridianPos += this->interval_meridian;
+				xPos += this->r;
+			}
+			points.push_back(parallels);
+			xPos = 0.f;
+			actuallyMeridianPos = INTERVAL_MERIDIAN_MAX * (-1);
+			actuallyParallelPos -= this->interval_parallel;
 		}
+
+		auto copy_points{ points };
+		std::reverse(copy_points.begin(), copy_points.end());
+
+		for (auto& points : copy_points)
+		{
+			for (auto& point : points)
+			{
+				point.meridian_pos *= -1;
+				point.parallel_pos *= -1;
+			}
+		}
+
+		points.insert(points.end(), copy_points.begin(), copy_points.end());
+		return points;
 	}
 	return vector<vector<Point>>();
 }
