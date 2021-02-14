@@ -92,13 +92,13 @@ vector<vector<Point>> MercatorsProjection::createMap()
 	{
 		vector<vector<Point>> points;
 
-		int count{	0 },
-			size{	static_cast<int>( this->sqrtTiles * 0.5f ) + 1	},
-			actuallyMeridianPos{ INTERVAL_MERIDIAN_MAX	* (-1)		},
-			actuallyParallelPos{ INTERVAL_PARALLEL_MAX				};
+		int count{ 0 },
+			size{ static_cast<int>(this->sqrtTiles * 0.5f) + 1 };
 
-		float xPos{0.f};
-		float yPos{ getParallelHeightInCms(actuallyParallelPos) };
+		float xPos{0.f},
+		actuallyMeridianPos{ INTERVAL_MERIDIAN_MAX * (-1)	},
+		actuallyParallelPos{ INTERVAL_PARALLEL_MAX			},
+		yPos{ getParallelHeightInCms(actuallyParallelPos)	};
 
 		for (unsigned i{}; i < size; i++)
 		{
