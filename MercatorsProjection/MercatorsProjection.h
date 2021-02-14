@@ -3,13 +3,23 @@
 
 using namespace std;
 
-constexpr int		RADIUS_OF_EARTH{	637100000	}; // Radius of earth.
+constexpr float		RADIUS_OF_EARTH{		637100000.f	}; // Radius of earth.
+constexpr int		INTERVAL_MERIDIAN_MAX{	180			}; // ???.
+constexpr int		INTERVAL_PARALLEL_MAX{	80			}; // ???.
+constexpr int		SUM_MERIDIAN{ INTERVAL_MERIDIAN_MAX + INTERVAL_MERIDIAN_MAX }; // ???.
+constexpr int		SUM_PARALLEL{ INTERVAL_PARALLEL_MAX + INTERVAL_PARALLEL_MAX }; // ???.
 
 class MercatorsProjection
 {
 public:
-	MercatorsProjection();
-	//MercatorsProjection(unsigned scale);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="rf"></param>
+	/// <param name="tiles"></param>
+	MercatorsProjection(unsigned rf = 1, unsigned tiles = 4);
+
 	~MercatorsProjection();
 
 	/// <summary>
@@ -24,7 +34,8 @@ public:
 	/// <returns> Representative fraction. </returns>
 	unsigned getRF() const;
 
-	unsigned char getInterval() const;
+	float getIntervalMeridian() const;
+	float getIntervalParallel() const;
 
 	void setTiles(const int& tiles);
 
@@ -40,12 +51,14 @@ private:
 
 	bool isSquareNumber(const unsigned int& number);
 
-	unsigned int	rf			{}; // Representative fraction
-	unsigned char	interval	{};	
-	unsigned int	tiles		{};	// ???
-	float			r			{};	// Radius of generating globe reduced to given scale
-	double			ln10		{}; // The result of the natural logarithm
-	bool			valid		{};	// ???
+	unsigned int	rf					{}; // Representative fraction
+	float			interval_meridian	{}; // ???
+	float			interval_parallel	{};	// ???
+	unsigned int	tiles				{};	// ???
+	float			r					{};	// Radius of generating globe reduced to given scale
+	double			ln10				{}; // The result of the natural logarithm
+	bool			valid				{};	// ???
+	bool			throuhZero			{}; // ???
 };
 
 #endif //MERCATORSPROJECTION_H

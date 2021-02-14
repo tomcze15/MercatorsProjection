@@ -2,13 +2,16 @@
 #include <utility>
 #include <cmath>
 
-MercatorsProjection::MercatorsProjection()
+MercatorsProjection::MercatorsProjection(unsigned rf, unsigned tiles)
 	:
-	rf(1),
-	r(RADIUS_OF_EARTH),
-	ln10(log(10)),
-	tiles(4),
-	valid(false)
+	rf(					rf						),
+	interval_meridian(	INTERVAL_MERIDIAN_MAX	),
+	interval_parallel(	INTERVAL_PARALLEL_MAX	),
+	r(					RADIUS_OF_EARTH			),
+	ln10(				log(10)					),
+	tiles(				tiles					),
+	valid(				false					),
+	throuhZero(			true					)
 {
 }
 
@@ -27,22 +30,30 @@ unsigned MercatorsProjection::getRF() const
 	return this->rf;
 }
 
-unsigned char MercatorsProjection::getInterval() const
+float MercatorsProjection::getIntervalMeridian() const
 {
-	return this->interval;
+	return this->interval_meridian;
+}
+
+float MercatorsProjection::getIntervalParallel() const
+{
+	return this->interval_parallel;
 }
 
 void MercatorsProjection::setTiles(const int& tiles)
 {
 	if (isSquareNumber(tiles) && 3 < tiles)
 	{ 
-		valid = false; 
-		//this->interval;
+		valid = false;
+		int sqrtOfTiles{ static_cast<int>(sqrt(tiles))};
+
+		this->interval_meridian = SUM_MERIDIAN / static_cast<float>(sqrtOfTiles);
+		this->interval_parallel = SUM_PARALLEL / static_cast<float>(sqrtOfTiles);
+
+		if (sqrtOfTiles % 2 == 1)	{ this->throuhZero = false; }
+		else						{ this->throuhZero = true;	}
 	}
-	else									 
-	{ 
-		valid = true; 
-	}
+	else { valid = true; }
 
 	this->tiles = tiles;
 }

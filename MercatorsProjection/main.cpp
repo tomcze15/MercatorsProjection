@@ -7,8 +7,7 @@ int main()
 {
 	MercatorsProjection mp;
 	mp.setRF(295000000);
-
-	mp.setTiles(16);
+	mp.setTiles(36);
 
 	return 0;
 }
