@@ -93,14 +93,12 @@ vector<vector<Point>> MercatorsProjection::createMap()
 		vector<vector<Point>> points;
 
 		int count{	0 },
-			size{	static_cast<int>( this->sqrtTiles * 0.5f ) 	},
-			actuallyMeridianPos{ INTERVAL_MERIDIAN_MAX	* (-1)	},
-			actuallyParallelPos{ INTERVAL_PARALLEL_MAX/** (-1)*/};
+			size{	static_cast<int>( this->sqrtTiles * 0.5f ) + 1	},
+			actuallyMeridianPos{ INTERVAL_MERIDIAN_MAX	* (-1)		},
+			actuallyParallelPos{ INTERVAL_PARALLEL_MAX				};
 
 		float xPos{0.f};
 		float yPos{ getParallelHeightInCms(actuallyParallelPos) };
-
-		if (!this->throuhZero) { size += 1; }
 
 		for (unsigned i{}; i < size; i++)
 		{
@@ -125,6 +123,10 @@ vector<vector<Point>> MercatorsProjection::createMap()
 		}
 
 		auto copy_points{ points };
+
+		if (this->throuhZero)
+			copy_points.pop_back();
+
 		std::reverse(copy_points.begin(), copy_points.end());
 
 		for (auto& points : copy_points)

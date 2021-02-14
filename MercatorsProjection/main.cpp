@@ -6,11 +6,8 @@ using namespace std;
 int main()
 {
 	MercatorsProjection mp;
-	mp.setRF(295000000);
-	mp.setTiles(25);
-
-	if (mp.isValid())
-		cout << "Bledny dane, aby utworzyæ zrzut!" << endl;
+	mp.setRF(210000000);
+	mp.setTiles(9);
 
 	auto map{ mp.createMap() };
 
