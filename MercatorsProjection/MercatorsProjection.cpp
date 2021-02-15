@@ -125,8 +125,12 @@ vector<vector<Point>> MercatorsProjection::createMap()
 		auto copy_points{ points };
 
 		if (this->throuhZero)
-			copy_points.pop_back();
+		{
+			for (auto& point : points.at(points.size()-1))
+				point.y = 0.f;
 
+			copy_points.pop_back();
+		}
 		std::reverse(copy_points.begin(), copy_points.end());
 
 		for (auto& points : copy_points)

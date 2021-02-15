@@ -7,7 +7,7 @@ int main()
 {
 	MercatorsProjection mp;
 	mp.setRF(290000000);
-	mp.setTiles(49);
+	mp.setTiles(64);
 
 	auto map{ mp.createMap() };
 

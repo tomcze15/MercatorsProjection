@@ -8,7 +8,7 @@ using namespace std;
 
 constexpr float		RADIUS_OF_EARTH{		637100000.f	};							// Radius of earth.
 constexpr int		INTERVAL_MERIDIAN_MAX{	180			};							// Longitude.
-constexpr int		INTERVAL_PARALLEL_MAX{	80			};							// Latitude.
+constexpr int		INTERVAL_PARALLEL_MAX{	90			};							// Latitude.
 constexpr int		SUM_MERIDIAN{ INTERVAL_MERIDIAN_MAX + INTERVAL_MERIDIAN_MAX };	// Sum Longitude.
 constexpr int		SUM_PARALLEL{ INTERVAL_PARALLEL_MAX + INTERVAL_PARALLEL_MAX };	// Sum Latitude.
 
